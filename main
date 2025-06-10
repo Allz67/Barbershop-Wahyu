@@ -1,0 +1,130 @@
+import psycopg2
+from prettytable import PrettyTable
+
+def connectDB():
+    try:
+        conn = psycopg2.connect(host="localhost", user="postgres", password="sriwijayafc32", dbname="Barbershop Wahyu Preloved")
+        cur = conn.cursor()
+        return conn, cur
+    except Exception:
+        print("Koneksi gagal. Silahkan perbaiki")
+        return None
+
+#LIAT DATA
+
+def getAllBarber():
+    conn, cur = connectDB()
+    query_select = "SELECT * FROM barber"
+    
+    cur.execute(query_select)
+    data = cur.fetchall()
+
+    table = PrettyTable()
+    column_names = [desc[0] for desc in cur.description]
+    table.field_names = column_names
+ 
+    for row in data:
+        table.add_row(row)
+
+    print(table)
+    conn.close()
+    
+def getAllLayanan():
+    conn, cur = connectDB()
+    query_select = "SELECT * from layanan"
+    
+    cur.execute(query_select)
+    data = cur.fetchall()
+
+    table = PrettyTable()
+    column_names = [desc[0] for desc in cur.description]
+    table.field_names = column_names
+ 
+    for row in data:
+        table.add_row(row)
+
+    print(table)
+    conn.close()
+    
+def getAllPengguna():
+    conn, cur = connectDB()
+    query_select = "SELECT * from pengguna"
+    
+    cur.execute(query_select)
+    data = cur.fetchall()
+
+    table = PrettyTable()
+    column_names = [desc[0] for desc in cur.description]
+    table.field_names = column_names
+ 
+    for row in data:
+        table.add_row(row)
+
+    print(table)
+    conn.close()
+    
+def getAllReservasi():
+    conn, cur = connectDB()
+    query_select = "SELECT * from reservasi"
+    
+    cur.execute(query_select)
+    data = cur.fetchall()
+
+    table = PrettyTable()
+    column_names = [desc[0] for desc in cur.description]
+    table.field_names = column_names
+ 
+    for row in data:
+        table.add_row(row)
+
+    print(table)
+    conn.close()
+    
+def getAllDetailReservasi():
+    conn, cur = connectDB()
+    query_select = "SELECT * from detail_reservasi"
+    
+    cur.execute(query_select)
+    data = cur.fetchall()
+
+    table = PrettyTable()
+    column_names = [desc[0] for desc in cur.description]
+    table.field_names = column_names
+ 
+    for row in data:
+        table.add_row(row)
+
+    print(table)
+    conn.close()
+ 
+ #INSERT DATA
+    
+def addBarber(nama_barber, email, no_telp, jenis_kelamin, status_aktif):
+    conn, cur = connectDB()
+    query_insert = "INSERT INTO barber(nama_barber, email, no_telp, jenis_kelamin, status_aktif) VALUES(%s, %s, %s, %s, %s)"
+    
+    cur.execute(query_insert, (nama_barber, email, no_telp, jenis_kelamin, status_aktif))
+    conn.commit()
+    print("Berhasil insert data")
+    getAllBarber()
+    conn.close()
+    
+def addLayanan(nama_layanan, harga_layanan):
+    conn, cur = connectDB()
+    query_insert = "INSERT INTO layanan(nama_layanan, harga_layanan) VALUES(%s, %s)"
+    
+    cur.execute(query_insert, (nama_layanan, harga_layanan))
+    conn.commit()
+    print("Berhasil insert data")
+    getAllLayanan()
+    conn.close()
+    
+def addReservasi(id_barber, id_pengguna, waktu, nilai_rating, komentar, metode_pembayaran, tanggal_pembayaran):
+    conn, cur = connectDB()
+    query_insert = "INSERT INTO reservasi(id_barber, id_pengguna, waktu, nilai_rating, komentar, metode_pembayaran, tanggal_pembayaran) VALUES(%s, %s)"
+    
+    cur.execute(query_insert, (id_barber, id_pengguna, waktu, nilai_rating, komentar, metode_pembayaran, tanggal_pembayaran))
+    conn.commit()
+    print("Berhasil insert data")
+    getAllReservasi()
+    conn.close()
